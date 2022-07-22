@@ -8,7 +8,7 @@ interface Props {
   publication: BCharityPost
 }
 
-const CommentedPublication: FC<Props> = ({ publication }) => {
+const PublicationCommented: FC<Props> = ({ publication }) => {
   const sourceIsGroup =
     publication?.commentOn?.metadata?.attributes[0]?.value === 'group post'
   // @ts-ignore
@@ -38,4 +38,4 @@ const CommentedPublication: FC<Props> = ({ publication }) => {
   )
 }
 
-export default CommentedPublication
+export default PublicationCommented

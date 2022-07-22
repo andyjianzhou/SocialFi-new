@@ -1,66 +1,38 @@
-name: CI
+name: CodeQL
 
 on:
-  workflow_dispatch:
   push:
     branches: [main]
   pull_request:
-    branches: [main, testnet]
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
-  lint:
+  analyze:
+    name: Analyze
     runs-on: ubuntu-latest
-    name: Lint
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript']
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
         with:
-          node-version: 16.x
-          cache: 'yarn'
+          languages: ${{ matrix.language }}
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --silent
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
 
-      - name: Lint codebase
-        run: yarn lint
-
-  prettier:
-    runs-on: ubuntu-latest
-    name: Prettier
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --silent
-
-      - name: Lint codebase
-        run: yarn prettier:check
-
-  test:
-    runs-on: ubuntu-latest
-    name: Test
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --silent
-
-      - name: GraphQL codegen
-        run: yarn codegen
-
-      - name: Run cypress
-        run: yarn cypress:e2e
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1

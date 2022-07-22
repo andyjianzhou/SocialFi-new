@@ -2,6 +2,7 @@ import { Menu, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 import React from 'react'
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import i18n from '../../i18n'
 
@@ -12,7 +13,7 @@ export default function TranslateButton() {
     i18n.changeLanguage(lng)
     console.log(i18n.language)
   }
-
+  const { t } = useTranslation('common')
   return (
     <Menu as="div">
       {({ open }) => (
