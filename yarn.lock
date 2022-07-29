@@ -2352,21 +2352,6 @@
     "@typescript-eslint/typescript-estree" "5.31.0"
     debug "^4.3.4"
 
-  version "5.31.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.31.0.tgz#7f42d7dcc68a0a6d80a0f3d9a65063aee7bb8d2c"
-  integrity sha512-UStjQiZ9OFTFReTrN+iGrC6O/ko9LVDhreEK5S3edmXgR396JGq7CoX2TWIptqt/ESzU2iRKXAHfSF2WJFcWHw==
-  dependencies:
-    "@typescript-eslint/scope-manager" "5.31.0"
-    "@typescript-eslint/types" "5.31.0"
-    "@typescript-eslint/typescript-estree" "5.31.0"
-    debug "^4.3.4"
-
-"@typescript-eslint/scope-manager@5.31.0":
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.31.0.tgz#f47a794ba84d9b818ab7f8f44fff55a61016c606"
-  integrity sha512-8jfEzBYDBG88rcXFxajdVavGxb5/XKXyvWgvD8Qix3EEJLCFIdVloJw+r9ww0wbyNLOTYyBsR+4ALNGdlalLLg==
-  dependencies:
-    "@typescript-eslint/types" "5.31.0"
-
 "@typescript-eslint/scope-manager@5.31.0":
   version "5.31.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.31.0.tgz#f47a794ba84d9b818ab7f8f44fff55a61016c606"
@@ -2402,19 +2387,6 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/typescript-estree@5.31.0":
-  version "5.31.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.31.0.tgz#eb92970c9d6e3946690d50c346fb9b1d745ee882"
-  integrity sha512-3S625TMcARX71wBc2qubHaoUwMEn+l9TCsaIzYI/ET31Xm2c9YQ+zhGgpydjorwQO9pLfR/6peTzS/0G3J/hDw==
-  dependencies:
-    "@typescript-eslint/types" "5.31.0"
-    "@typescript-eslint/visitor-keys" "5.31.0"
-    debug "^4.3.4"
-    globby "^11.1.0"
-    is-glob "^4.0.3"
-    semver "^7.3.7"
-    tsutils "^3.21.0"
-
 "@typescript-eslint/utils@5.31.0":
   version "5.31.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-5.31.0.tgz#e146fa00dca948bfe547d665b2138a2dc1b79acd"
@@ -2426,14 +2398,6 @@
     "@typescript-eslint/typescript-estree" "5.31.0"
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
-
-"@typescript-eslint/visitor-keys@5.31.0":
-  version "5.31.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.31.0.tgz#b0eca264df01ce85dceb76aebff3784629258f54"
-  integrity sha512-ZK0jVxSjS4gnPirpVjXHz7mgdOsZUHzNYSfTw2yPa3agfbt9YfqaBiBZFSSxeBWnpWkzCxTfUpnzA3Vily/CSg==
-  dependencies:
-    "@typescript-eslint/types" "5.31.0"
-    eslint-visitor-keys "^3.3.0"
 
 "@typescript-eslint/visitor-keys@5.31.0":
   version "5.31.0"
@@ -7621,10 +7585,10 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-hook-form@^7.33.1:
-  version "7.33.1"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.33.1.tgz#8c4410e3420788d3b804d62cc4c142915c2e46d0"
-  integrity sha512-ydTfTxEJdvgjCZBj5DDXRc58oTEfnFupEwwTAQ9FSKzykEJkX+3CiAkGtAMiZG7IPWHuzgT6AOBfogiKhUvKgg==
+react-hook-form@^7.34.0:
+  version "7.34.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.34.0.tgz#22883b5e014e5c5e35f3061d0e3862153b0df2ec"
+  integrity sha512-s0/TJ09NVlEk2JPp3yit1WnMuPNBXFmUKEQPulgDi9pYBw/ZmmAFHe6AXWq73Y+kp8ye4OcMf0Jv+i/qLPektg==
 
 react-hot-toast@^2.3.0:
   version "2.3.0"
