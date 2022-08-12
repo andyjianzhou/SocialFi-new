@@ -23,7 +23,7 @@ const TotalDonors: FC<Props> = ({ pubIdData, callback, from }) => {
               callback={(data: any) => {
                 data?.whoCollectedPublication?.items?.forEach((pub: any) => {
                   setDonors(
-                    (donors) => new Set(donors.add(pub.defaultProfile.handle))
+                    (donors) => new Set(donors.add(pub?.defaultProfile?.handle))
                   )
                 })
               }}
