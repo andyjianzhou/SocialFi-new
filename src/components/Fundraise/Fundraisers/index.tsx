@@ -1,8 +1,10 @@
 import { gql, useQuery } from '@apollo/client'
-import { GridItemFour, GridLayout } from '@components/GridLayout'
+import { GridItemFour, GridItemSix, GridLayout } from '@components/GridLayout'
 import Like from '@components/Post/Actions/Like'
 import Share from '@components/Post/Actions/Share'
 import Markup from '@components/Shared/Markup'
+// import Search from '@components/Fundraise/Fundraisers/FundraiseSearch'
+import Search from '@components/Shared/Navbar/Search'
 import { Button } from '@components/UI/Button'
 import { Card } from '@components/UI/Card'
 import { Spinner } from '@components/UI/Spinner'
@@ -84,7 +86,6 @@ const Fundraisers: FC<Props> = ({}) => {
         revenueData.push(0)
         // }
       })
-
       setPageInfo(data?.explorePublications?.pageInfo)
       setPublications(fundraise)
 
@@ -142,107 +143,120 @@ const Fundraisers: FC<Props> = ({}) => {
   var cover
 
   return (
-    <GridLayout>
-      <SEO title={`Fundraisers • ${APP_NAME}`} />
-      {publications?.map(
-        (post: BCharityPost, index: number) => (
-          (cover = post?.metadata?.cover?.original?.url),
-          (
-            <GridItemFour key={`${post?.id}_${index}`}>
-              <Card>
-                {/* <SinglePost post={post} /> */}
+    <>
+      {/* <div aria-hidden="true">
+        <Input
+          type="text"
+          className="py-2 px-3 text-sm "
+          placeholder="Search..."
+          // value={searchText}
+          // onChange={handleSearch}
+        />
+      </div> */}
+      <Search />
 
-                <div
-                  className="h-40 rounded-t-xl border-b sm:h-52 dark:border-b-gray-700/80"
-                  style={{
-                    backgroundImage: `url(${
-                      cover
-                        ? imagekitURL(cover, 'attachment')
-                        : `${STATIC_ASSETS}/patterns/2.svg`
-                    })`,
-                    backgroundColor: '#8b5cf6',
-                    backgroundSize: cover ? 'cover' : '30%',
-                    backgroundPosition: 'center center',
-                    backgroundRepeat: cover ? 'no-repeat' : 'repeat'
-                  }}
-                />
+      <GridLayout>
+        <SEO title={`Fundraisers • ${APP_NAME}`} />
+        {publications?.map(
+          (post: BCharityPost, index: number) => (
+            (cover = post?.metadata?.cover?.original?.url),
+            (
+              <GridItemFour key={`${post?.id}_${index}`}>
+                <Card>
+                  {/* <SinglePost post={post} /> */}
 
-                <div className="p-5">
-                  <div className="block justify-between items-center sm:flex">
-                    <div className="mr-0 space-y-1 sm:mr-16">
-                      <div className="text-xl font-bold">
-                        {post?.metadata?.name}
+                  <div
+                    className="h-40 rounded-t-xl border-b sm:h-52 dark:border-b-gray-700/80"
+                    style={{
+                      backgroundImage: `url(${
+                        cover
+                          ? imagekitURL(cover, 'attachment')
+                          : `${STATIC_ASSETS}/patterns/2.svg`
+                      })`,
+                      backgroundColor: '#8b5cf6',
+                      backgroundSize: cover ? 'cover' : '30%',
+                      backgroundPosition: 'center center',
+                      backgroundRepeat: cover ? 'no-repeat' : 'repeat'
+                    }}
+                  />
+
+                  <div className="p-5">
+                    <div className="block justify-between items-center sm:flex">
+                      <div className="mr-0 space-y-1 sm:mr-16">
+                        <div className="text-xl font-bold">
+                          {post?.metadata?.name}
+                        </div>
+                        <div className="text-sm leading-7 whitespace-pre-wrap break-words">
+                          <Markup>
+                            {post?.metadata?.description
+                              ?.replace(/\n\s*\n/g, '\n\n')
+                              .trim()}
+                          </Markup>
+                        </div>
+                        <div
+                          className="block sm:flex items-center !my-3 space-y-2 sm:space-y-0 sm:space-x-3"
+                          data-test="fundraise-meta"
+                        ></div>
                       </div>
-                      <div className="text-sm leading-7 whitespace-pre-wrap break-words">
-                        <Markup>
-                          {post?.metadata?.description
-                            ?.replace(/\n\s*\n/g, '\n\n')
-                            .trim()}
-                        </Markup>
-                      </div>
-                      <div
-                        className="block sm:flex items-center !my-3 space-y-2 sm:space-y-0 sm:space-x-3"
-                        data-test="fundraise-meta"
-                      ></div>
                     </div>
-                  </div>
-                  <GridLayout className="!p-0 mt-5">
-                    <GridItemFour className="!mb-4 space-y-1 sm:mb-0">
-                      {loading ? (
-                        <div className="w-16 h-5 !mt-2 rounded-md shimmer" />
-                      ) : (
-                        <span className="flex items-center space-x-1.5">
-                          <Tooltip content={'WMATIC'}>
-                            <img
-                              className="w-7 h-7"
-                              height={28}
-                              width={28}
-                              src={getTokenImage('WMATIC')}
-                              alt={'WMATIC'}
-                            />
-                          </Tooltip>
-                          <span className="space-x-1">
-                            <RevenueDetails
-                              fund={post}
-                              callback={(revenue: any) => {
-                                revenueData[index] = revenue
-                                if (!revenueData[index]) {
-                                  revenueData[index] = 0
-                                }
-                                setRevenueData([...revenueData])
-                              }}
-                            />
-                            <span className="text-2xl font-bold">
-                              {revenueData[index]}
+                    <GridLayout className="!p-0 mt-5">
+                      <GridItemSix className="!mb-4 space-y-1 sm:mb-0">
+                        {loading ? (
+                          <div className="w-16 h-5 !mt-2 rounded-md shimmer" />
+                        ) : (
+                          <span className="flex items-center space-x-1.5">
+                            <Tooltip content={'WMATIC'}>
+                              <img
+                                className="w-7 h-7"
+                                height={28}
+                                width={28}
+                                src={getTokenImage('WMATIC')}
+                                alt={'WMATIC'}
+                              />
+                            </Tooltip>
+                            <span className="space-x-1">
+                              <RevenueDetails
+                                fund={post}
+                                callback={(revenue: any) => {
+                                  revenueData[index] = revenue
+                                  if (!revenueData[index]) {
+                                    revenueData[index] = 0
+                                  }
+                                  setRevenueData([...revenueData])
+                                }}
+                              />
+                              <span className="text-2xl font-bold">
+                                {revenueData[index]}
+                              </span>
+                              <span className="text-xs">{'Raised'}</span>
                             </span>
-                            <span className="text-xs">{'Raised'}</span>
                           </span>
-                        </span>
-                      )}
-                      <Like post={post} />
-                      <Share post={post} />
+                        )}
+                        <Like post={post} />
+                        <Share post={post} />
 
-                      <a
-                        href={`/posts/${post?.id}`}
-                        key={post?.id}
-                        style={{ textDecoration: 'none' }}
-                      >
-                        <Button>Donate</Button>
-                      </a>
-                    </GridItemFour>
-                  </GridLayout>
-                </div>
-              </Card>
-            </GridItemFour>
+                        <a
+                          href={`/posts/${post?.id}`}
+                          key={post?.id}
+                          style={{ textDecoration: 'none' }}
+                        >
+                          <Button>Donate</Button>
+                        </a>
+                      </GridItemSix>
+                    </GridLayout>
+                  </div>
+                </Card>
+              </GridItemFour>
+            )
           )
-        )
-      )}
-      {pageInfo?.next && publications.length !== pageInfo?.totalCount && (
-        <span ref={observe} className="flex justify-center p-5">
-          <Spinner size="sm" />
-        </span>
-      )}
-    </GridLayout>
+        )}
+        {pageInfo?.next && publications.length !== pageInfo?.totalCount && (
+          <span ref={observe} className="flex justify-center p-5">
+            <Spinner size="sm" />
+          </span>
+        )}
+      </GridLayout>
+    </>
   )
 }
 
