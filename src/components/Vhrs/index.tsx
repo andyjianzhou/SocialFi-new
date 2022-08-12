@@ -7,7 +7,7 @@ import JSSoup from 'jssoup'
 import { NextPage } from 'next'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { useFilters, useTable } from 'react-table'
-import { CORS_PROXY, VHR_TOP_HOLDERS_URL } from 'src/constants'
+import { VHR_TOP_HOLDERS_URL } from 'src/constants'
 
 import QueryHandle from './QueryHandle'
 
@@ -29,7 +29,7 @@ const Vhrs: NextPage = () => {
 
   useEffect(() => {
     if (topHolders.length === 0)
-      fetch(`${CORS_PROXY}/${VHR_TOP_HOLDERS_URL}`)
+      fetch(`api/cors?url=${VHR_TOP_HOLDERS_URL}`)
         .then((response) => {
           console.log(response)
           return response.text()
@@ -184,8 +184,12 @@ const Vhrs: NextPage = () => {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
+                  let className = ''
+                  if (index === 0) className = 'bg-yellow-300'
+                  if (index === 1) className = 'bg-slate-300'
+                  if (index === 2) className = 'bg-amber-500'
                   return (
-                    <td className="p-4" {...cell.getCellProps()}>
+                    <td className={`p-4 ${className}`} {...cell.getCellProps()}>
                       {cell.render('Cell', { rank: index })}
                     </td>
                   )
