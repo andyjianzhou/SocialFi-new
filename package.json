@@ -28,7 +28,7 @@
     "@sentry/nextjs": "^7.9.0",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tippyjs/react": "^4.2.6",
-    "@types/react-mentions": "^4.1.6",
+    "@types/react-mentions": "^4.1.7",
     "@types/react-table": "^7.7.12",
     "arweave": "^1.10.23",
     "axios": "^0.27.2",
