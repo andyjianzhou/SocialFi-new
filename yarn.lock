@@ -5778,10 +5778,10 @@ i18next-browser-languagedetector@^6.1.4:
   dependencies:
     "@babel/runtime" "^7.14.6"
 
-i18next@^21.9.0:
-  version "21.9.0"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.9.0.tgz#b63ebb0d4e1b23709951ca4774dc19d2ffac9553"
-  integrity sha512-B+6/yd7rCpJidyPuBaEApUECx7G8Ai6+tqYhrChsY4MmQqJhG7qJ4eT6Lm1OnRhieVelEtfxh4aAQktdNVZtDA==
+i18next@^22.0.3:
+  version "22.0.3"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-22.0.3.tgz#084e40ec88d63c13385175ddebcc4395c89b97e3"
+  integrity sha512-gG6kCG5+gnPXdK8TLTJ2oiuFSjn6CYMSUwV3vnmISxwTunJHREn/z6gi1g7942c61K1dL3Gm+9a64nZCPv6mlg==
   dependencies:
     "@babel/runtime" "^7.17.2"
 
@@ -9343,7 +9343,7 @@ void-elements@3.1.0:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
   integrity sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==
 
-wagmi@0.5.12:
+wagmi@^0.5.12:
   version "0.5.12"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.5.12.tgz#156ef39fc1be4a12b1067a4800b327e8a6736e16"
   integrity sha512-Y7eGKYhgNw6fohiXBE4uak/lotfgB+KaANqok16ORqwBFV+zaByMYWCrOIYlk1/6ngSyW1dcSVCU8djjh+RNtg==
