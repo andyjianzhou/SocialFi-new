@@ -38,6 +38,31 @@ export const TotalHoursCell = (props: {
   )
 }
 
+export const TotalGoodCell = (props: {
+  value: { index: number; value: number }
+  good: string[]
+}) => {
+  const decimals = 2
+  const index = props.value.index
+  const value = props.value.value
+  const good = props.good[index]
+  if (good === '') {
+    return <a>{value.toFixed(decimals)}</a>
+  }
+  const url = `${POLYGONSCAN_URL}/tx/${good}`
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-brand-500"
+    >
+      {value.toFixed(decimals)}{' '}
+      {<ExternalLinkIcon className="w-4 h-4 inline-flex" />}
+    </a>
+  )
+}
+
 export const StatusCell = (
   props: {
     value: { index: number; value: string; postID: string }

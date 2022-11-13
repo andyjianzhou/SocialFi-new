@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-key */
+import { DAI_ABI } from '@abis/DAI_ABI'
+import { GOOD_ABI } from '@abis/GOOD_ABI'
 import { DocumentNode, useQuery } from '@apollo/client'
 import PostsShimmer from '@components/Shared/Shimmer/PostsShimmer'
 import { Card } from '@components/UI/Card'
@@ -13,7 +15,14 @@ import { ethers } from 'ethers'
 import React, { FC, useState } from 'react'
 import { useInView } from 'react-cool-inview'
 import { Row, useFilters, useTable } from 'react-table'
+import {
+  DAI_TOKEN,
+  GIVE_DAI_LP,
+  GOOD_TOKEN,
+  VHR_TO_DAI_PRICE
+} from 'src/constants'
 import { useAppPersistStore } from 'src/store/app'
+import { useContractRead } from 'wagmi'
 
 import NFTDetails from './NFTDetails'
 import VHRToken from './VHRToken'
@@ -35,6 +44,10 @@ export interface Data {
   startDate: string
   endDate: string
   totalHours: {
+    index: number
+    value: number
+  }
+  totalGood: {
     index: number
     value: number
   }
@@ -60,7 +73,51 @@ const VHRTable: FC<Props> = ({
   const [tableData, setTableData] = useState<Data[]>([])
   const [pubIdData, setPubIdData] = useState<string[]>([])
   const [vhrTxnData, setVhrTxnData] = useState<string[]>([])
+  const [goodTxnData, setGoodTxnData] = useState<string[]>([])
   const [addressData, setAddressData] = useState<string[]>([])
+
+  const [balanceOf, setBalanceOf] = useState(0)
+  const [balanceOfQuote, setBalanceOfQuote] = useState(0)
+  const [decimals, setDecimals] = useState(0)
+
+  useContractRead({
+    addressOrName: GOOD_TOKEN,
+    contractInterface: GOOD_ABI,
+    functionName: 'balanceOf',
+    watch: true,
+    args: [GIVE_DAI_LP],
+
+    onSuccess(data) {
+      setBalanceOf(parseFloat(data.toString()))
+    }
+  })
+
+  useContractRead({
+    addressOrName: DAI_TOKEN,
+    contractInterface: DAI_ABI,
+    functionName: 'balanceOf',
+    watch: true,
+    args: [GIVE_DAI_LP],
+
+    onSuccess(data) {
+      setBalanceOfQuote(parseFloat(data.toString()))
+    }
+  })
+
+  useContractRead({
+    addressOrName: GOOD_TOKEN,
+    contractInterface: GOOD_ABI,
+    functionName: 'decimals',
+    watch: true,
+    onSuccess(data) {
+      setDecimals(parseFloat(data.toString()))
+    }
+  })
+
+  const quoteTokenAmountTotal = balanceOfQuote / 10 ** decimals
+  const tokenAmountTotal = balanceOf / 10 ** decimals
+  const goodToDAIPrice = +(quoteTokenAmountTotal / tokenAmountTotal).toFixed(8)
+  const vhrToGoodPrice = +(VHR_TO_DAI_PRICE / goodToDAIPrice).toFixed(8)
 
   const handleTableData = async (data: any) => {
     return Promise.all(
@@ -77,6 +134,10 @@ const VHRTable: FC<Props> = ({
           totalHours: {
             index: index,
             value: i.metadata.attributes[4].value
+          },
+          totalGood: {
+            index: index,
+            value: Number(i.metadata.attributes[4].value) * vhrToGoodPrice
           },
           verified: {
             index: index,
@@ -103,6 +164,10 @@ const VHRTable: FC<Props> = ({
             totalHours: {
               index: index,
               value: metadata.attributes[4].value
+            },
+            totalGood: {
+              index: index,
+              value: Number(metadata.attributes[4].value) * vhrToGoodPrice
             },
             verified: {
               index: index,
@@ -141,14 +206,17 @@ const VHRTable: FC<Props> = ({
       }
       const pubId: string[] = [],
         vhrTxn: string[] = [],
+        goodTxn: string[] = [],
         addresses: string[] = []
       hours.map((i: any) => {
         pubId.push(i.id)
         vhrTxn.push('')
+        goodTxn.push('')
         addresses.push(i.collectNftAddress)
       })
       setPubIdData([...pubIdData, ...pubId])
       setVhrTxnData([...vhrTxnData, ...vhrTxn])
+      setGoodTxnData([...goodTxnData, ...goodTxn])
       setAddressData([...addressData, ...addresses])
       setOnEnter(true)
     }
@@ -171,6 +239,20 @@ const VHRTable: FC<Props> = ({
       handleTableData(hours).then((result: Data[]) => {
         setTableData([...tableData, ...result])
       })
+      const pubId: string[] = [],
+        vhrTxn: string[] = [],
+        goodTxn: string[] = [],
+        addresses: string[] = []
+      hours.map((i: any) => {
+        pubId.push(i.id)
+        vhrTxn.push('')
+        goodTxn.push('')
+        addresses.push(i.collectNftAddress)
+      })
+      setPubIdData([...pubIdData, ...pubId])
+      setVhrTxnData([...vhrTxnData, ...vhrTxn])
+      setGoodTxnData([...goodTxnData, ...goodTxn])
+      setAddressData([...addressData, ...addresses])
       if (from) {
         setPageInfo(data?.notifications?.pageInfo)
         setPublications([...publications, ...data?.notifications?.items])
@@ -257,7 +339,10 @@ const VHRTable: FC<Props> = ({
                   {row.cells.map((cell) => {
                     return (
                       <td className="p-4" {...cell.getCellProps()}>
-                        {cell.render('Cell', { vhr: vhrTxnData })}
+                        {cell.render('Cell', {
+                          vhr: vhrTxnData,
+                          good: goodTxnData
+                        })}
                       </td>
                     )
                   })}
@@ -266,7 +351,9 @@ const VHRTable: FC<Props> = ({
                   pubId={pubIdData[index]}
                   callback={(data: any) => {
                     const publications = data.publications.items.filter(
-                      (i: any) => ethers.utils.isHexString(i.metadata.content)
+                      (i: any) => {
+                        return ethers.utils.isHexString(i.metadata.content)
+                      }
                     )
                     if (publications.length !== 0) {
                       if (
@@ -274,6 +361,24 @@ const VHRTable: FC<Props> = ({
                       ) {
                         vhrTxnData[index] = publications[0].metadata.content
                         setVhrTxnData(vhrTxnData)
+                        setTableData([...tableData])
+                      }
+                    }
+
+                    const good: string[] = []
+                    data.publications.items.forEach((i: any) => {
+                      const res = i?.metadata?.content?.split(' ')
+                      if (
+                        ethers.utils.isHexString(res[0]) &&
+                        res[1] === '"good"'
+                      ) {
+                        good.push(res[0])
+                      }
+                    })
+                    if (good.length !== 0) {
+                      if (goodTxnData[index] != good[0]) {
+                        goodTxnData[index] = good[0]
+                        setGoodTxnData(goodTxnData)
                         setTableData([...tableData])
                       }
                     }

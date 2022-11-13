@@ -113,7 +113,6 @@ interface Props {
 }
 
 const Verify: FC<Props> = ({ post }) => {
-  // const { t } = useTranslation('common')
   const { userSigNonce, setUserSigNonce } = useAppStore()
   const { isAuthenticated, currentUser } = useAppPersistStore()
   const { address } = useAccount()
@@ -133,7 +132,6 @@ const Verify: FC<Props> = ({ post }) => {
   const [balanceOf, setBalanceOf] = useState(0)
   const [balanceOfQuote, setBalanceOfQuote] = useState(0)
   const [decimals, setDecimals] = useState(0)
-  // const [validBalance, setValidBalance] = useState(0)
   const [goodTransferAmount, setGoodTransferAmount] = useState(0)
 
   useQuery(COMMENT_FEED_QUERY, {
@@ -161,9 +159,7 @@ const Verify: FC<Props> = ({ post }) => {
     args: [GIVE_DAI_LP],
 
     onSuccess(data) {
-      //console.log('Success', data)
       setBalanceOf(parseFloat(data.toString()))
-      //console.log(totalSupply);
     }
   })
 
@@ -175,9 +171,7 @@ const Verify: FC<Props> = ({ post }) => {
     args: [GIVE_DAI_LP],
 
     onSuccess(data) {
-      //console.log('Success', data)
       setBalanceOfQuote(parseFloat(data.toString()))
-      //console.log(totalSupply);
     }
   })
 
@@ -187,9 +181,7 @@ const Verify: FC<Props> = ({ post }) => {
     functionName: 'decimals',
     watch: true,
     onSuccess(data) {
-      //console.log('Success', data)
       setDecimals(parseFloat(data.toString()))
-      //console.log(totalSupply);
     }
   })
 
@@ -213,17 +205,12 @@ const Verify: FC<Props> = ({ post }) => {
   })
 
   useEffect(() => {
-    //console.log(parseInt(getVhrBalance.data?.value._hex as string, 16))
     setVhrBalance(parseInt(getVhrBalance.data?.value._hex as string, 16))
-    // console.log(getGoodBalance.data)
     setGoodBalance(
       getGoodBalance.data?.formatted.length! > 7
         ? getGoodBalance.data?.formatted.slice(0, 7)! + '...'
         : getGoodBalance.data?.formatted!
     )
-    // console.log(
-    //   parseInt(post.metadata.attributes[4].value as string) * vhrToGoodPrice
-    // )
     setGoodTransferAmount(
       parseInt(post.metadata.attributes[4].value as string) * vhrToGoodPrice
     )
@@ -249,20 +236,6 @@ const Verify: FC<Props> = ({ post }) => {
       }
     })
 
-  // const { config } = usePrepareContractWrite({
-  //   addressOrName: GOOD_TOKEN,
-  //   contractInterface: GOOD_ABI,
-  //   functionName: 'transfer',
-  //   args: [post.profile.ownedBy, (goodTransferAmount * 10 ** 18).toString()]
-  // })
-
-  // const {
-  //   data,
-  //   isLoading,
-  //   isSuccess,
-  //   write: writeGoodTransfer
-  // } = useContractWrite(config)
-
   const { isLoading: goodWriteLoading, write: writeGoodTransfer } =
     useContractWrite({
       addressOrName: GOOD_TOKEN,
@@ -270,8 +243,8 @@ const Verify: FC<Props> = ({ post }) => {
       functionName: 'transfer',
       args: [post.profile.ownedBy, (goodTransferAmount * 10 ** 18).toString()],
       onSuccess(data) {
-        //setTxnData(data.hash)
-        //createComment(data.hash)
+        setTxnData(data.hash)
+        createComment(data.hash + ' "good"')
       },
       onError(error: any) {
         toast.error(error?.data?.message ?? error?.message)
@@ -509,11 +482,6 @@ const Verify: FC<Props> = ({ post }) => {
     const vhrTransferAmount = parseInt(
       post.metadata.attributes[4].value as string
     )
-    // console.log(vhrBalance)
-    // console.log(goodBalance)
-    // console.log(vhrToGoodPrice)
-    // console.log(vhrTransferAmount)
-    // console.log(goodTransferAmount)
 
     if (vhrBalance < vhrTransferAmount) {
       toast.error(
@@ -530,13 +498,6 @@ const Verify: FC<Props> = ({ post }) => {
       }
       createCollect()
     }
-    // if (validBalance) {
-    //   writeGoodTransfer()
-    //   if (!hasVhrTxn) {
-    //     writeVhrTransfer()
-    //   }
-    //   createCollect()
-    // }
   }
 
   return (
@@ -548,10 +509,6 @@ const Verify: FC<Props> = ({ post }) => {
               className="sm:mt-0 sm:ml-auto"
               onClick={() => {
                 checkEnoughBalance()
-                // if (validBalance) {
-                //   // if (!hasVhrTxn) writeVhrTransfer()
-                //   // createCollect()
-                // }
               }}
               disabled={
                 typedDataLoading ||

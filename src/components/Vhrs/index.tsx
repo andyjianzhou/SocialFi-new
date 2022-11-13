@@ -31,7 +31,6 @@ const Vhrs: NextPage = () => {
     if (topHolders.length === 0)
       fetch(`api/cors?url=${VHR_TOP_HOLDERS_URL}`)
         .then((response) => {
-          console.log(response)
           return response.text()
         })
         .then((html) => {
@@ -185,9 +184,6 @@ const Vhrs: NextPage = () => {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   let className = ''
-                  if (index === 0) className = 'bg-yellow-300'
-                  if (index === 1) className = 'bg-slate-300'
-                  if (index === 2) className = 'bg-amber-500'
                   return (
                     <td className={`p-4 ${className}`} {...cell.getCellProps()}>
                       {cell.render('Cell', { rank: index })}
